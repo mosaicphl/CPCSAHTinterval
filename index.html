@@ -23,9 +23,28 @@
 
     /* Fixed "Grand Total" footer styling (dark blue) */
     tfoot tr.grand-total-row td{
-      background: #0b2a5b !important;  /* dark blue */
+      background: #0b2a5b !important;
       color: #ffffff !important;
       font-weight: 800;
+    }
+
+    /* Group (Supervisor) header rows inside DataTables body */
+    tr.group td{
+      background: #e9ecef !important;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    tr.group td .group-label{
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    tr.group td .caret{
+      width: 1.25rem;
+      display: inline-block;
+      text-align: center;
+      font-weight: 900;
     }
   </style>
 </head>
@@ -67,6 +86,9 @@
               <span class="d-block small">(based on last commit time of <code>cpcs.csv</code>)</span>
             </div>
             <div class="text-muted mt-1">Source: <code>cpcs.csv</code></div>
+            <div class="text-muted small mt-1">
+              Grouping: click a Supervisor header row to collapse/expand.
+            </div>
           </div>
         </div>
 
@@ -75,7 +97,7 @@
         </div>
 
         <div class="table-responsive">
-          <table id="tblInterval" class="table table-striped table-hover table-bordered w--100"></table>
+          <table id="tblInterval" class="table table-striped table-hover table-bordered w-100"></table>
         </div>
       </div>
     </div>
@@ -115,6 +137,12 @@
     // Interval table: highlight if 5th column > 420
     const INTERVAL_CSV = "cpcs.csv";
     const INTERVAL_COL_INDEX = 4; // 5th column
+
+    // NEW: make Interval table collapsible by Supervisor (column 2 => index 1)
+    const INTERVAL_GROUP_COL_INDEX = 1;
+
+    // store collapsed groups (Supervisor names)
+    const collapsedGroups = new Set();
 
     function toNumber(x) {
       const n = Number(String(x ?? "").replace(/[^0-9.-]/g, ""));
@@ -197,6 +225,120 @@
       });
     }
 
+    // NEW: Interval renderer with collapsible groups by Supervisor (column 2)
+    function renderIntervalCollapsibleBySupervisor() {
+      const statusEl = document.getElementById("statusInterval");
+      const selector = "#tblInterval";
+
+      Papa.parse(INTERVAL_CSV + "?v=" + Date.now(), {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const data = results.data;
+          const fields = results.meta.fields || [];
+          const columns = fields.map(name => ({ title: name, data: name }));
+
+          const groupField = fields[INTERVAL_GROUP_COL_INDEX]; // Supervisor column name
+
+          statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
+          statusEl.textContent = `Loaded ${data.length} row(s) from ${INTERVAL_CSV}. Grouped by ${groupField}.`;
+
+          // Destroy existing table if re-rendered
+          if ($.fn.dataTable.isDataTable(selector)) {
+            $(selector).DataTable().destroy();
+            $(selector).empty();
+          }
+
+          const dt = new DataTable(selector, {
+            data,
+            columns,
+            pageLength: 25,
+            scrollX: true,
+
+            // Keep Supervisor grouping consistent (optional: change to "asc" if preferred)
+            order: [[INTERVAL_GROUP_COL_INDEX, "asc"]],
+
+            createdRow: function(row, rowData) {
+              // highlight rule (5th column > threshold)
+              const colName = fields[INTERVAL_COL_INDEX];
+              const value = toNumber(rowData[colName]);
+              if (value !== null && value > THRESHOLD) $(row).addClass("high-red-row");
+
+              // hide rows if that supervisor group is collapsed
+              const supervisor = String(rowData[groupField] ?? "").trim();
+              if (collapsedGroups.has(supervisor)) {
+                row.style.display = "none";
+              }
+            },
+
+            drawCallback: function() {
+              const api = this.api();
+
+              // Remove existing group headers then rebuild each draw
+              $(api.rows({ page: "current" }).nodes()).removeClass("group-start");
+
+              let lastGroup = null;
+
+              api.rows({ page: "current" }).every(function() {
+                const rowData = this.data();
+                const supervisor = String(rowData?.[groupField] ?? "").trim();
+
+                if (supervisor !== lastGroup) {
+                  const isCollapsed = collapsedGroups.has(supervisor);
+                  const caret = isCollapsed ? "▶" : "▼";
+                  const label = supervisor || "(blank)";
+
+                  const groupRow = $(`
+                    <tr class="group" data-group="${$("<div>").text(label).html()}">
+                      <td colspan="${fields.length}">
+                        <span class="group-label">
+                          <span class="caret">${caret}</span>
+                          <span>${$("<div>").text(label).html()}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  `);
+
+                  // Insert group header before this row
+                  $(this.node()).before(groupRow);
+
+                  lastGroup = supervisor;
+                }
+
+                // Apply current collapsed state to row visibility
+                if (collapsedGroups.has(supervisor)) {
+                  this.node().style.display = "none";
+                } else {
+                  this.node().style.display = "";
+                }
+              });
+
+              // Click handler for group rows (delegate)
+              $(selector + " tbody").off("click", "tr.group").on("click", "tr.group", function() {
+                const group = $(this).attr("data-group");
+                // data-group contains escaped HTML; recover text via jQuery:
+                const supervisor = $("<div>").html(group).text();
+
+                if (collapsedGroups.has(supervisor)) collapsedGroups.delete(supervisor);
+                else collapsedGroups.add(supervisor);
+
+                // redraw current page to update caret + hide/show rows
+                api.draw(false);
+              });
+            }
+          });
+
+          return dt;
+        },
+        error: function(err) {
+          console.error(err);
+          statusEl.className = "alert alert-danger py-2 px-3 mt-3 mb-3";
+          statusEl.textContent = `Failed to load ${INTERVAL_CSV}: ${err.message || err}`;
+        }
+      });
+    }
+
     // Special renderer: keep Grand Total as fixed footer (Overall table)
     function renderOverallWithFixedGrandTotal() {
       const statusEl = document.getElementById("statusOverall");
@@ -230,7 +372,8 @@
 
           statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
           statusEl.textContent =
-            `Loaded ${data.length} row(s) from ${OVERALL_CSV}.` + (grandTotalRow ? " (Grand Total fixed.)" : " (No Grand Total row found.)");
+            `Loaded ${data.length} row(s) from ${OVERALL_CSV}.` +
+            (grandTotalRow ? " (Grand Total fixed.)" : " (No Grand Total row found.)");
 
           new DataTable("#tblOverall", {
             data,
@@ -258,12 +401,8 @@
 
     renderOverallWithFixedGrandTotal();
 
-    renderCSVTable({
-      csvFile: INTERVAL_CSV,
-      tableSelector: "#tblInterval",
-      statusId: "statusInterval",
-      highlightColIndex: INTERVAL_COL_INDEX
-    });
+    // Use the collapsible-by-supervisor renderer for the Interval table
+    renderIntervalCollapsibleBySupervisor();
   </script>
 </body>
 </html>
