@@ -1,25 +1,28 @@
-﻿LOB,Supervisor,Name,AHT,Handled,ACW Ave,Hold Ave,TR% Ave
+﻿LOB,Supervisor,Name,Handled,AHT,ACW Ave,Hold Ave,TR% Ave
 CPCS,"Molina, Schubert Jr","Cabangal, Ariel",260,1,2,,0.00%
-CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",313,14,10,1,0.00%
-CPCS,"Molina, Schubert Jr","Capillas, Renalyn",241,15,10,,0.00%
-CPCS,"Molina, Schubert Jr","Gador, George II",239,15,10,3,0.00%
-CPCS,"Molina, Schubert Jr","Galvez, Christian",477,15,10,,0.00%
-CPCS,"Molina, Schubert Jr","Surles, Jinky",267,13,10,,0.00%
-CPCS,"Molina, Schubert Jr","Taleon, Gerald",214,9,10,,0.00%
+CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",318,21,10,1,0.00%
+CPCS,"Molina, Schubert Jr","Capillas, Renalyn",276,22,10,,0.00%
+CPCS,"Molina, Schubert Jr","Gador, George II",264,23,10,3,0.00%
+CPCS,"Molina, Schubert Jr","Galvez, Christian",472,19,10,,0.00%
+CPCS,"Molina, Schubert Jr","Surles, Jinky",305,21,10,,0.00%
+CPCS,"Molina, Schubert Jr","Taleon, Gerald",274,12,10,,0.00%
 CPCS,"Molina, Schubert Jr","Tiburan, Swinny",625,3,10,1,0.00%
-CPCS,"Navarra, Mark Debby","Balcena, Riesel Liberty Rose",363,9,10,,0.00%
-CPCS,"Navarra, Mark Debby","Baumbad, Joshua",307,14,6,,7.14%
-CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",357,12,10,,0.00%
-CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",365,4,10,,0.00%
-CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",266,15,10,,0.00%
-CPCS,"Navarra, Mark Debby","Judicpa, Judegin",313,13,9,,7.69%
-CPCS,"Navarra, Mark Debby","Noblezada, Chriz Vincent",415,13,10,,0.00%
-CPCS,"Navarra, Mark Debby","Pajotagana, Champhagne",382,15,10,3,0.00%
-CPCS,"Navarra, Mark Debby","Sanchez, Roderick",443,12,9,,8.33%
-CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",365,14,10,,0.00%
-CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",413,12,10,,0.00%
-CPCS,"Sombero, April Marie","Alob, Rheshane Marie",879,6,10,101,0.00%
-CPCS,"Sombero, April Marie","Aragon, Antonio Iii",615,9,10,87,0.00%
-CPCS,"Sombero, April Marie","Camarino, Mark",614,7,10,,0.00%
-CPCS,"Sombero, April Marie","Macero, Reynan",595,3,10,,0.00%
-CPCS,"Sombero, April Marie","Zerrudo, Jeserelle Jason",673,7,10,50,0.00%
+CPCS,"Navarra, Mark Debby","Balcena, Riesel Liberty Rose",418,11,10,,0.00%
+CPCS,"Navarra, Mark Debby","Baumbad, Joshua",294,18,6,,5.56%
+CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",369,19,10,,0.00%
+CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",334,11,10,,0.00%
+CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",323,22,10,,0.00%
+CPCS,"Navarra, Mark Debby","Judicpa, Judegin",360,15,9,,6.67%
+CPCS,"Navarra, Mark Debby","Noblezada, Chriz Vincent",315,20,10,,0.00%
+CPCS,"Navarra, Mark Debby","Pajotagana, Champhagne",388,18,10,3,0.00%
+CPCS,"Navarra, Mark Debby","Sanchez, Roderick",393,20,9,,5.00%
+CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",376,18,10,,0.00%
+CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",398,15,10,,0.00%
+CPCS,"Sombero, April Marie","Alob, Rheshane Marie",659,12,10,84,0.00%
+CPCS,"Sombero, April Marie","Aragon, Antonio Iii",626,11,10,94,0.00%
+CPCS,"Sombero, April Marie","Camarino, Mark",480,13,10,,0.00%
+CPCS,"Sombero, April Marie","Macero, Reynan",650,6,10,,0.00%
+CPCS,"Sombero, April Marie","Zerrudo, Jeserelle Jason",612,10,10,57,0.00%
+,,,,,,,
+,,,,,,,
+,,,,,,,
