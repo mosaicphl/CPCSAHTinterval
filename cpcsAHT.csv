@@ -1,16 +1,5 @@
-LOB,Supervisor,AHT,Handled,ACW Ave,Hold Ave,TR% Ave,
-CPCS,"Molina, Schubert Jr",9,352,10,1,0.00%,
-CPCS,"Navarra, Mark Debby",40,336,9,--,2.50%,
-CPCS,"Sombero, April Marie",5,460,10,--,0.00%,
-CPCS,Grand Total,54,350,9,1,1.85%,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
+LOB,Supervisor,AHT,Handled,ACW Ave,Hold Ave,TR% Ave
+CPCS,"Molina, Schubert Jr",37,370,10,1,0.00%
+CPCS,"Navarra, Mark Debby",70,326,9,--,1.43%
+CPCS,"Sombero, April Marie",21,655,10,85,0.00%
+CPCS,Grand Total,128,393,9,21,0.78%
