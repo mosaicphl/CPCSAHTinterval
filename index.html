@@ -46,22 +46,21 @@
       text-align: center;
       font-weight: 900;
     }
-    a.right-link{
-  float: right;
-  display: inline-block;
-  margin: -30px 0 0 0;
-  font-style: italic;
-  padding: 10px 12px;
-  border-radius: 10px;
-  text-decoration: none;
-  font: 14px/1.2 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  /*color: #0f172a;*/
-  background: #ffffff;
-}
 
-a.right-link:hover{
-  background: #f8fafc;
-}
+    a.right-link{
+      float: right;
+      display: inline-block;
+      margin: -30px 0 0 0;
+      font-style: italic;
+      padding: 10px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font: 14px/1.2 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: #ffffff;
+    }
+    a.right-link:hover{
+      background: #f8fafc;
+    }
   </style>
 </head>
 <body>
@@ -74,13 +73,22 @@ a.right-link:hover{
         <div class="d-flex flex-wrap align-items-end justify-content-between gap-2">
           <div>
             <h1 class="h4 mb-1">CPCS AHT (Overall)</h1>
-            <div class="text-muted">Date: <span id="today"></span></div>
+            <div class="text-muted">
+              As of <span class="intervalAsOf">loading…</span> ET
+              <span class="d-block small">(based on last commit time of <code>cpcsAHT.csv</code>)</span>
+            </div>
             <div class="text-muted mt-1">Source: <code>cpcsAHT.csv</code></div>
           </div>
         </div>
-<a class="right-link btn-primary" href="https://cgs-m.github.io/Efficiency-Interval/?lob=cpcs">Efficiency Interval (CPCS)</a>
-<div style="clear: both;"></div>
-        
+
+        <a class="right-link btn-primary"
+           href="https://cgs-m.github.io/Efficiency-Interval/?lob=cpcs"
+           target="_blank"
+           rel="noopener noreferrer">
+          Efficiency Interval (CPCS)
+        </a>
+        <div style="clear: both;"></div>
+
         <div id="statusOverall" class="alert alert-secondary py-2 px-3 mt-3 mb-3">
           Loading...
         </div>
@@ -100,8 +108,8 @@ a.right-link:hover{
           <div>
             <h2 class="h5 mb-1">CPCS AHT Interval</h2>
             <div class="text-muted">
-              As of <span id="intervalAsOf">loading…</span> ET
-              <span class="d-block small">(based on last commit time of <code>cpcs.csv</code>)</span>
+              As of <span class="intervalAsOf">loading…</span> ET
+              <span class="d-block small">(based on last commit time of <code>cpcsAHT.csv</code>)</span>
             </div>
             <div class="text-muted mt-1">Source: <code>cpcs.csv</code></div>
             <div class="text-muted small mt-1">
@@ -144,7 +152,7 @@ a.right-link:hover{
 
     const THRESHOLD = 420;
 
-    // Overall table: highlight if 3rd column > 420
+    // Overall table
     const OVERALL_CSV = "cpcsAHT.csv";
     const OVERALL_COL_INDEX = 2; // 3rd column
 
@@ -152,14 +160,16 @@ a.right-link:hover{
     const GRAND_TOTAL_TEXT = "Grand Total";
     const GRAND_TOTAL_COL_INDEX = 1; // 2nd column => index 1 (0-based)
 
-    // Interval table: highlight if 5th column > 420
+    // Interval table
     const INTERVAL_CSV = "cpcs.csv";
     const INTERVAL_COL_INDEX = 4; // 5th column
 
-    // NEW: make Interval table collapsible by Supervisor (column 2 => index 1)
+    // Interval grouping by Supervisor (column 2 => index 1)
     const INTERVAL_GROUP_COL_INDEX = 1;
 
-    // store collapsed groups (Supervisor names)
+    // IMPORTANT: "As of" should be based on cpcsAHT.csv (per your request)
+    const ASOF_CSV = OVERALL_CSV;
+
     const collapsedGroups = new Set();
 
     function toNumber(x) {
@@ -167,225 +177,77 @@ a.right-link:hover{
       return Number.isFinite(n) ? n : null;
     }
 
-    function setToday() {
-      const today = new Intl.DateTimeFormat("en-US", {
-        timeZone: "America/New_York",
-        year: "numeric",
-        month: "long",
-        day: "2-digit"
-      }).format(new Date());
-      document.getElementById("today").textContent = today;
-    }
-
-    async function setAsOfFromLastCommit(filename) {
-      const el = document.getElementById("intervalAsOf");
-      try {
-        const api = `https://api.github.com/repos/${OWNER}/${REPO}/commits?path=${encodeURIComponent(filename)}&per_page=1&sha=${encodeURIComponent(BRANCH)}`;
-        const res = await fetch(api, { headers: { "Accept": "application/vnd.github+json" } });
-
-        if (!res.ok) {
-          const body = await res.text();
-          throw new Error(`GitHub API HTTP ${res.status}: ${body.slice(0, 160)}`);
-        }
-
-        const commits = await res.json();
-        const iso = commits?.[0]?.commit?.committer?.date || commits?.[0]?.commit?.author?.date;
-        if (!iso) throw new Error("No commit date found for this file.");
-
-        const formatted = new Intl.DateTimeFormat("en-US", {
-          timeZone: "America/New_York",
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-          hour: "numeric",
-          minute: "2-digit"
-        }).format(new Date(iso));
-
-        el.textContent = formatted;
-      } catch (e) {
-        console.error(e);
-        el.textContent = "unable to fetch time";
+    function destroyIfExists(tableSelector) {
+      if ($.fn.DataTable && $.fn.DataTable.isDataTable(tableSelector)) {
+        $(tableSelector).DataTable().destroy();
+        $(tableSelector).empty();
       }
     }
 
-    function renderCSVTable({ csvFile, tableSelector, statusId, highlightColIndex }) {
-      const statusEl = document.getElementById(statusId);
+    // Update BOTH “As of …” spans
+    function setAsOfFromLastCommit(filename) {
+      const els = document.querySelectorAll(".intervalAsOf");
+      const setAll = (txt) => els.forEach(el => el.textContent = txt);
 
-      Papa.parse(csvFile + "?v=" + Date.now(), {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          const data = results.data;
-          const fields = results.meta.fields || [];
-          const columns = fields.map(name => ({ title: name, data: name }));
+      (async () => {
+        try {
+          const api = `https://api.github.com/repos/${OWNER}/${REPO}/commits?path=${encodeURIComponent(filename)}&per_page=1&sha=${encodeURIComponent(BRANCH)}`;
+          const res = await fetch(api, { headers: { "Accept": "application/vnd.github+json" } });
 
-          statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
-          statusEl.textContent = `Loaded ${data.length} row(s) from ${csvFile}.`;
-
-          new DataTable(tableSelector, {
-            data,
-            columns,
-            pageLength: 25,
-            scrollX: true,
-            createdRow: function(row, rowData) {
-              const colName = fields[highlightColIndex];
-              const value = toNumber(rowData[colName]);
-              if (value !== null && value > THRESHOLD) $(row).addClass("high-red-row");
-            }
-          });
-        },
-        error: function(err) {
-          console.error(err);
-          statusEl.className = "alert alert-danger py-2 px-3 mt-3 mb-3";
-          statusEl.textContent = `Failed to load ${csvFile}: ${err.message || err}`;
-        }
-      });
-    }
-
-    // NEW: Interval renderer with collapsible groups by Supervisor (column 2)
-    function renderIntervalCollapsibleBySupervisor() {
-      const statusEl = document.getElementById("statusInterval");
-      const selector = "#tblInterval";
-
-      Papa.parse(INTERVAL_CSV + "?v=" + Date.now(), {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          const data = results.data;
-          const fields = results.meta.fields || [];
-          const columns = fields.map(name => ({ title: name, data: name }));
-
-          const groupField = fields[INTERVAL_GROUP_COL_INDEX]; // Supervisor column name
-
-          statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
-          statusEl.textContent = `Loaded ${data.length} row(s) from ${INTERVAL_CSV}. Grouped by ${groupField}.`;
-
-          // Destroy existing table if re-rendered
-          if ($.fn.dataTable.isDataTable(selector)) {
-            $(selector).DataTable().destroy();
-            $(selector).empty();
+          if (!res.ok) {
+            const body = await res.text();
+            throw new Error(`GitHub API HTTP ${res.status}: ${body.slice(0, 160)}`);
           }
 
-          const dt = new DataTable(selector, {
-            data,
-            columns,
-            pageLength: 25,
-            scrollX: true,
+          const commits = await res.json();
+          const iso = commits?.[0]?.commit?.committer?.date || commits?.[0]?.commit?.author?.date;
+          if (!iso) throw new Error("No commit date found for this file.");
 
-            // Keep Supervisor grouping consistent (optional: change to "asc" if preferred)
-            order: [[INTERVAL_GROUP_COL_INDEX, "asc"]],
+          const formatted = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/New_York",
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "numeric",
+            minute: "2-digit"
+          }).format(new Date(iso));
 
-            createdRow: function(row, rowData) {
-              // highlight rule (5th column > threshold)
-              const colName = fields[INTERVAL_COL_INDEX];
-              const value = toNumber(rowData[colName]);
-              if (value !== null && value > THRESHOLD) $(row).addClass("high-red-row");
-
-              // hide rows if that supervisor group is collapsed
-              const supervisor = String(rowData[groupField] ?? "").trim();
-              if (collapsedGroups.has(supervisor)) {
-                row.style.display = "none";
-              }
-            },
-
-            drawCallback: function() {
-              const api = this.api();
-
-              // Remove existing group headers then rebuild each draw
-              $(api.rows({ page: "current" }).nodes()).removeClass("group-start");
-
-              let lastGroup = null;
-
-              api.rows({ page: "current" }).every(function() {
-                const rowData = this.data();
-                const supervisor = String(rowData?.[groupField] ?? "").trim();
-
-                if (supervisor !== lastGroup) {
-                  const isCollapsed = collapsedGroups.has(supervisor);
-                  const caret = isCollapsed ? "▶" : "▼";
-                  const label = supervisor || "(blank)";
-
-                  const groupRow = $(`
-                    <tr class="group" data-group="${$("<div>").text(label).html()}">
-                      <td colspan="${fields.length}">
-                        <span class="group-label">
-                          <span class="caret">${caret}</span>
-                          <span>${$("<div>").text(label).html()}</span>
-                        </span>
-                      </td>
-                    </tr>
-                  `);
-
-                  // Insert group header before this row
-                  $(this.node()).before(groupRow);
-
-                  lastGroup = supervisor;
-                }
-
-                // Apply current collapsed state to row visibility
-                if (collapsedGroups.has(supervisor)) {
-                  this.node().style.display = "none";
-                } else {
-                  this.node().style.display = "";
-                }
-              });
-
-              // Click handler for group rows (delegate)
-              $(selector + " tbody").off("click", "tr.group").on("click", "tr.group", function() {
-                const group = $(this).attr("data-group");
-                // data-group contains escaped HTML; recover text via jQuery:
-                const supervisor = $("<div>").html(group).text();
-
-                if (collapsedGroups.has(supervisor)) collapsedGroups.delete(supervisor);
-                else collapsedGroups.add(supervisor);
-
-                // redraw current page to update caret + hide/show rows
-                api.draw(false);
-              });
-            }
-          });
-
-          return dt;
-        },
-        error: function(err) {
-          console.error(err);
-          statusEl.className = "alert alert-danger py-2 px-3 mt-3 mb-3";
-          statusEl.textContent = `Failed to load ${INTERVAL_CSV}: ${err.message || err}`;
+          setAll(formatted);
+        } catch (e) {
+          console.error(e);
+          setAll("unable to fetch time");
         }
-      });
+      })();
     }
 
-    // Special renderer: keep Grand Total as fixed footer (Overall table)
+    // Overall renderer: keep Grand Total as fixed footer
     function renderOverallWithFixedGrandTotal() {
       const statusEl = document.getElementById("statusOverall");
       const tableEl = document.querySelector("#tblOverall");
       const tfootEl = tableEl.querySelector("tfoot");
+
+      destroyIfExists("#tblOverall");
+      tfootEl.innerHTML = "";
 
       Papa.parse(OVERALL_CSV + "?v=" + Date.now(), {
         download: true,
         header: true,
         skipEmptyLines: true,
         complete: function(results) {
-          const allRows = results.data;
+          const allRows = results.data || [];
           const fields = results.meta.fields || [];
           const columns = fields.map(name => ({ title: name, data: name }));
 
           const gtFieldName = fields[GRAND_TOTAL_COL_INDEX];
-
           const isGrandTotal = (r) =>
             String(r?.[gtFieldName] ?? "").trim().toLowerCase() === GRAND_TOTAL_TEXT.toLowerCase();
 
           const grandTotalRow = allRows.find(isGrandTotal);
           const data = allRows.filter(r => !isGrandTotal(r));
 
-          // Build the footer row HTML (always visible)
           if (grandTotalRow) {
             const tds = fields.map(f => `<td>${(grandTotalRow[f] ?? "").toString()}</td>`).join("");
             tfootEl.innerHTML = `<tr class="grand-total-row">${tds}</tr>`;
-          } else {
-            tfootEl.innerHTML = "";
           }
 
           statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
@@ -413,13 +275,102 @@ a.right-link:hover{
       });
     }
 
+    // Interval renderer with collapsible Supervisor groups
+    function renderIntervalCollapsibleBySupervisor() {
+      const statusEl = document.getElementById("statusInterval");
+      const selector = "#tblInterval";
+
+      destroyIfExists(selector);
+
+      Papa.parse(INTERVAL_CSV + "?v=" + Date.now(), {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const data = results.data || [];
+          const fields = results.meta.fields || [];
+          const columns = fields.map(name => ({ title: name, data: name }));
+
+          const groupField = fields[INTERVAL_GROUP_COL_INDEX];
+
+          statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
+          statusEl.textContent = `Loaded ${data.length} row(s) from ${INTERVAL_CSV}. Grouped by ${groupField}.`;
+
+          new DataTable(selector, {
+            data,
+            columns,
+            pageLength: 25,
+            scrollX: true,
+            order: [[INTERVAL_GROUP_COL_INDEX, "asc"]],
+
+            createdRow: function(row, rowData) {
+              const colName = fields[INTERVAL_COL_INDEX];
+              const value = toNumber(rowData[colName]);
+              if (value !== null && value > THRESHOLD) $(row).addClass("high-red-row");
+
+              const supervisor = String(rowData[groupField] ?? "").trim();
+              if (collapsedGroups.has(supervisor)) row.style.display = "none";
+            },
+
+            drawCallback: function() {
+              const api = this.api();
+              $(selector + " tbody tr.group").remove();
+
+              let lastGroup = null;
+
+              api.rows({ page: "current" }).every(function() {
+                const rowData = this.data();
+                const supervisor = String(rowData?.[groupField] ?? "").trim();
+
+                if (supervisor !== lastGroup) {
+                  const isCollapsed = collapsedGroups.has(supervisor);
+                  const caret = isCollapsed ? "▶" : "▼";
+                  const label = supervisor || "(blank)";
+
+                  const groupRow = $(`
+                    <tr class="group" data-group="${$("<div>").text(label).html()}">
+                      <td colspan="${fields.length}">
+                        <span class="group-label">
+                          <span class="caret">${caret}</span>
+                          <span>${$("<div>").text(label).html()}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  `);
+
+                  $(this.node()).before(groupRow);
+                  lastGroup = supervisor;
+                }
+
+                if (collapsedGroups.has(supervisor)) this.node().style.display = "none";
+                else this.node().style.display = "";
+              });
+
+              $(selector + " tbody")
+                .off("click", "tr.group")
+                .on("click", "tr.group", function() {
+                  const group = $(this).attr("data-group");
+                  const decoded = $("<textarea/>").html(group).text();
+
+                  if (collapsedGroups.has(decoded)) collapsedGroups.delete(decoded);
+                  else collapsedGroups.add(decoded);
+
+                  api.draw(false);
+                });
+            }
+          });
+        },
+        error: function(err) {
+          console.error(err);
+          statusEl.className = "alert alert-danger py-2 px-3 mt-3 mb-3";
+          statusEl.textContent = `Failed to load ${INTERVAL_CSV}: ${err.message || err}`;
+        }
+      });
+    }
+
     // Run
-    setToday();
-    setAsOfFromLastCommit(INTERVAL_CSV);
-
+    setAsOfFromLastCommit(ASOF_CSV);   // <-- commit time from cpcsAHT.csv
     renderOverallWithFixedGrandTotal();
-
-    // Use the collapsible-by-supervisor renderer for the Interval table
     renderIntervalCollapsibleBySupervisor();
   </script>
 </body>
