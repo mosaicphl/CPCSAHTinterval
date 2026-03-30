@@ -1,5 +1,25 @@
-LOB,Supervisor,AHT,Handled,ACW Ave,Hold Ave,TR% Ave
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
+LOB,Supervisor,Name ,AHT seconds,Handled Calls ,ACW.,Hold time.,Transfer rate%
+CPCS,"Molina, Schubert Jr","Cabangal, Ariel",52,4,5,,0.00%
+CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",281,26,10,1,0.00%
+CPCS,"Molina, Schubert Jr","Capillas, Renalyn",279,17,10,,0.00%
+CPCS,"Molina, Schubert Jr","Colorado, Mary Kate Pauline",163,2,10,,0.00%
+CPCS,"Molina, Schubert Jr","Gador, George II",322,20,10,1,0.00%
+CPCS,"Molina, Schubert Jr","Galvez, Christian",580,13,10,,0.00%
+CPCS,"Molina, Schubert Jr","Surles, Jinky",418,20,10,,0.00%
+CPCS,"Molina, Schubert Jr","Taleon, Gerald",442,17,10,,0.00%
+CPCS,"Molina, Schubert Jr","Tiburan, Swinny",310,8,10,,0.00%
+CPCS,"Navarra, Mark Debby","Balcena, Riesel Liberty Rose",359,17,9,43,0.00%
+CPCS,"Navarra, Mark Debby","Baumbad, Joshua",420,18,4,,0.00%
+CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",349,21,10,,0.00%
+CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",571,10,10,,0.00%
+CPCS,"Navarra, Mark Debby","Judicpa, Judegin",336,21,9,,9.52%
+CPCS,"Navarra, Mark Debby","Pajotagana, Champhagne",425,20,10,,0.00%
+CPCS,"Navarra, Mark Debby","Sanchez, Roderick",371,21,10,,0.00%
+CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",500,14,10,,0.00%
+CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",374,24,10,,0.00%
+CPCS,"Sombero, April Marie","Alob, Rheshane Marie",889,8,10,85,0.00%
+CPCS,"Sombero, April Marie","Aragon, Antonio Iii",761,12,10,98,0.00%
+CPCS,"Sombero, April Marie","Camarino, Mark",384,14,10,66,0.00%
+CPCS,"Sombero, April Marie","Fernandez, Eljohn",1142,7,9,153,0.00%
+CPCS,"Sombero, April Marie","Sirame, Kevin John",1044,10,9,149,10.00%
+CPCS,"Sombero, April Marie","Zerrudo, Jeserelle Jason",766,10,10,114,0.00%
