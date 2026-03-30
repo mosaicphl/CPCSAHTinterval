@@ -40,12 +40,6 @@
       align-items: center;
       gap: .5rem;
     }
-    tr.group td .caret{
-      width: 1.25rem;
-      display: inline-block;
-      text-align: center;
-      font-weight: 900;
-    }
 
     a.right-link{
       float: right;
@@ -167,7 +161,7 @@
     // Interval grouping by Supervisor (column 2 => index 1)
     const INTERVAL_GROUP_COL_INDEX = 1;
 
-    // IMPORTANT: "As of" should be based on cpcsAHT.csv (per your request)
+    // "As of" should be based on cpcsAHT.csv (per your request)
     const ASOF_CSV = OVERALL_CSV;
 
     const collapsedGroups = new Set();
@@ -245,9 +239,12 @@
           const grandTotalRow = allRows.find(isGrandTotal);
           const data = allRows.filter(r => !isGrandTotal(r));
 
+          // Build footer row (always visible)
           if (grandTotalRow) {
             const tds = fields.map(f => `<td>${(grandTotalRow[f] ?? "").toString()}</td>`).join("");
             tfootEl.innerHTML = `<tr class="grand-total-row">${tds}</tr>`;
+          } else {
+            tfootEl.innerHTML = "";
           }
 
           statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
@@ -275,7 +272,7 @@
       });
     }
 
-    // Interval renderer with collapsible Supervisor groups
+    // Interval renderer with collapsible Supervisor groups (NO caret icons)
     function renderIntervalCollapsibleBySupervisor() {
       const statusEl = document.getElementById("statusInterval");
       const selector = "#tblInterval";
@@ -323,15 +320,12 @@
                 const supervisor = String(rowData?.[groupField] ?? "").trim();
 
                 if (supervisor !== lastGroup) {
-                  const isCollapsed = collapsedGroups.has(supervisor);
-                  const caret = isCollapsed ? "▶" : "▼";
                   const label = supervisor || "(blank)";
 
                   const groupRow = $(`
                     <tr class="group" data-group="${$("<div>").text(label).html()}">
                       <td colspan="${fields.length}">
                         <span class="group-label">
-                          <span class="caret">${caret}</span>
                           <span>${$("<div>").text(label).html()}</span>
                         </span>
                       </td>
@@ -369,7 +363,7 @@
     }
 
     // Run
-    setAsOfFromLastCommit(ASOF_CSV);   // <-- commit time from cpcsAHT.csv
+    setAsOfFromLastCommit(ASOF_CSV);   // commit time from cpcsAHT.csv
     renderOverallWithFixedGrandTotal();
     renderIntervalCollapsibleBySupervisor();
   </script>
