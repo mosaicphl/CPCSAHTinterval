@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html>
 <head>
@@ -5,19 +6,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CPCS AHT Interval Viewer</title>
 
+  <!-- Bootstrap (page styling) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+  <!-- DataTables + Bootstrap theme -->
   <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
+
+  <!-- DataTables RowGroup (for collapsible <90 / >90 grouping) -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.5.0/css/rowGroup.bootstrap5.min.css">
 
   <style>
     body { background: #f7f8fa; }
     code { background:#f1f3f5; padding: 2px 6px; border-radius: 4px; }
+
+    /* Light red highlight for the entire row */
     .high-red-row td { background-color: #fde2e1 !important; }
+
+    /* Keep tables from looking cramped when wide */
     table.dataTable tbody td { vertical-align: middle; }
+
+    /* Fixed "Grand Total" footer styling (dark blue) */
     tfoot tr.grand-total-row td{
       background: #0b2a5b !important;
       color: #ffffff !important;
       font-weight: 800;
     }
+
+    /* Group header styling for collapsible sections */
+    tr.group-header td{
+      background: #eef2ff !important;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+    }
+    tr.group-collapsed td{
+      background: #e0e7ff !important;
+    }
+
     a.right-link{
       float: right;
       display: inline-block;
@@ -29,12 +54,16 @@
       font: 14px/1.2 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background: #ffffff;
     }
-    a.right-link:hover{ background: #f8fafc; }
+    a.right-link:hover{
+      background: #f8fafc;
+    }
   </style>
 </head>
 <body>
 
   <div class="container py-4">
+
+    <!-- TOP CARD / TABLE -->
     <div class="card shadow-sm mb-4">
       <div class="card-body">
         <div class="d-flex flex-wrap align-items-end justify-content-between gap-2">
@@ -45,6 +74,9 @@
               <span class="d-block small">(based on last commit time of <code>cpcsAHT.csv</code>)</span>
             </div>
             <div class="text-muted mt-1">Source: <code>cpcsAHT.csv</code></div>
+            <div class="text-muted small mt-1">
+              Tip: click the <code>&lt;90</code> / <code>&gt;90</code> group header rows to collapse/expand.
+            </div>
           </div>
         </div>
 
@@ -68,6 +100,7 @@
       </div>
     </div>
 
+    <!-- SECOND CARD / TABLE -->
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex flex-wrap align-items-end justify-content-between gap-2">
@@ -96,9 +129,17 @@
     </div>
   </div>
 
+  <!-- jQuery (for DataTables integration) -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- DataTables core + Bootstrap adapter -->
   <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+
+  <!-- DataTables RowGroup (collapsible grouping) -->
+  <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/dataTables.rowGroup.min.js"></script>
+
+  <!-- Papa Parse (CSV parser) -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
@@ -108,36 +149,30 @@
     const BRANCH = "main";
     /************************************/
 
-    // Threshold for cpcsAHT.csv column 4 (AHT seconds) is 420
+    // Threshold for AHT seconds (column 4) is 420
     const THRESHOLD = 420;
 
-    // Overall table (cpcsAHT.csv)
+    // Overall table (collapsible by Tenure)
     const OVERALL_CSV = "cpcsAHT.csv";
 
-    // cpcsAHT.csv columns:
-    // 1 Tenure
-    // 2 AM
-    // 3 Handled Calls
-    // 4 AHT seconds  <-- highlight threshold applies here
-    // 5 Hold time.
-    // 6 ACW.
-    // 7 Transfer rate%
-    // 8 Occupancy%
-    const OVERALL_COL_INDEX = 3; // 0-based index for "AHT seconds" (column 4)
-
-    // Grand Total detection (Overall table only)
+    // Grand Total detection in "Tenure" column (index 0)
     const GRAND_TOTAL_TEXT = "Grand Total";
-    const GRAND_TOTAL_COL_INDEX = 0; // "Tenure" column is where Grand Total appears in your CSV
+    const GRAND_TOTAL_COL_INDEX = 0;
+
+    // AHT seconds column index in cpcsAHT.csv: column 4 => index 3
+    const OVERALL_AHT_INDEX = 3;
 
     // Interval table
     const INTERVAL_CSV = "cpcs.csv";
-    const INTERVAL_COL_INDEX = 4; // keep your original interval highlight index
+    const INTERVAL_COL_INDEX = 4; // your original setting (5th column)
 
     // "As of" should be based on cpcsAHT.csv
     const ASOF_CSV = OVERALL_CSV;
 
     function toNumber(x) {
-      const n = Number(String(x ?? "").replace(/[^0-9.-]/g, ""));
+      const s = String(x ?? "").trim();
+      if (s === "" || s.toLowerCase() === "nan" || s === "--") return null;
+      const n = Number(s.replace(/[^0-9.-]/g, ""));
       return Number.isFinite(n) ? n : null;
     }
 
@@ -148,6 +183,7 @@
       }
     }
 
+    // Update BOTH “As of …” spans
     function setAsOfFromLastCommit(filename) {
       const els = document.querySelectorAll(".intervalAsOf");
       const setAll = (txt) => els.forEach(el => el.textContent = txt);
@@ -228,7 +264,8 @@
       });
     }
 
-    function renderOverallWithFixedGrandTotal() {
+    // Overall renderer: collapsible <90 / >90 groups + fixed Grand Total footer
+    function renderOverallWithCollapsibleTenureGroups() {
       const statusEl = document.getElementById("statusOverall");
       const tableEl = document.querySelector("#tblOverall");
       const tfootEl = tableEl.querySelector("tfoot");
@@ -236,44 +273,111 @@
       destroyIfExists("#tblOverall");
       tfootEl.innerHTML = "";
 
+      // Track collapsed state per group (e.g., "<90", ">90")
+      const collapsed = Object.create(null);
+
       Papa.parse(OVERALL_CSV + "?v=" + Date.now(), {
         download: true,
-        header: true,
+        header: false,       // IMPORTANT: arrays => avoids "unknown parameter" errors
         skipEmptyLines: true,
+
+        // Your provided cpcsAHT.csv sample is whitespace/tab separated.
+        // If your repo file is truly comma-separated, remove this line.
+        delimiter: "\t",
+
         complete: function(results) {
-          const allRows = results.data || [];
-          const fields = results.meta.fields || [];
-          const columns = fields.map(name => ({ title: name, data: name }));
+          const rows = results.data || [];
+          if (rows.length < 2) {
+            statusEl.className = "alert alert-warning py-2 px-3 mt-3 mb-3";
+            statusEl.textContent = `No data found in ${OVERALL_CSV}.`;
+            return;
+          }
 
-          const gtFieldName = fields[GRAND_TOTAL_COL_INDEX]; // "Tenure"
+          // First row is the header titles
+          const headers = rows[0].map(h => String(h ?? "").trim());
+
+          // Normalize data rows to header length
+          const dataRows = rows.slice(1).map(r => headers.map((_, i) => (r?.[i] ?? "")));
+
+          // Grand Total detection
           const isGrandTotal = (r) =>
-            String(r?.[gtFieldName] ?? "").trim().toLowerCase() === GRAND_TOTAL_TEXT.toLowerCase();
+            String(r?.[GRAND_TOTAL_COL_INDEX] ?? "").trim().toLowerCase() === GRAND_TOTAL_TEXT.toLowerCase();
 
-          const grandTotalRow = allRows.find(isGrandTotal);
-          const data = allRows.filter(r => !isGrandTotal(r));
+          const grandTotalRow = dataRows.find(isGrandTotal);
+          const nonGrandTotal = dataRows.filter(r => !isGrandTotal(r));
 
+          // Pin Grand Total to footer
           if (grandTotalRow) {
-            const tds = fields.map(f => `<td>${(grandTotalRow[f] ?? "").toString()}</td>`).join("");
+            const tds = headers.map((_, i) => `<td>${String(grandTotalRow[i] ?? "")}</td>`).join("");
             tfootEl.innerHTML = `<tr class="grand-total-row">${tds}</tr>`;
           }
 
+          // Build DT columns for array data
+          const columns = headers.map((title, i) => ({ title, data: i }));
+
+          // Group key based on Tenure cell
+          const groupKey = (tenureCell) => {
+            const t = String(tenureCell ?? "").trim();
+            if (t.startsWith("<90")) return "<90";
+            if (t.startsWith(">90")) return ">90";
+            return t || "(blank)";
+          };
+
           statusEl.className = "alert alert-success py-2 px-3 mt-3 mb-3";
           statusEl.textContent =
-            `Loaded ${data.length} row(s) from ${OVERALL_CSV}.` +
+            `Loaded ${nonGrandTotal.length} row(s) from ${OVERALL_CSV}.` +
             (grandTotalRow ? " (Grand Total fixed.)" : " (No Grand Total row found.)");
 
-          new DataTable("#tblOverall", {
-            data,
+          const dt = new DataTable("#tblOverall", {
+            data: nonGrandTotal,
             columns,
             pageLength: 25,
             scrollX: true,
+
             createdRow: function(row, rowData) {
-              const colName = fields[OVERALL_COL_INDEX]; // "AHT seconds"
-              const value = toNumber(rowData[colName]);
+              // Highlight AHT seconds > 420
+              const value = toNumber(rowData[OVERALL_AHT_INDEX]);
               if (value !== null && value > THRESHOLD) $(row).addClass("high-red-row");
+
+              // Hide rows if their group is collapsed
+              const g = groupKey(rowData[0]);
+              if (collapsed[g]) row.style.display = "none";
+            },
+
+            rowGroup: {
+              dataSrc: function(row) {
+                return groupKey(row[0]); // Tenure column
+              },
+              startRender: function(rows, group) {
+                const count = rows.count();
+                const isCollapsed = !!collapsed[group];
+
+                return $('<tr/>')
+                  .addClass('group-header')
+                  .toggleClass('group-collapsed', isCollapsed)
+                  .append(`<td colspan="${headers.length}">${group} (${count}) — click to ${isCollapsed ? "expand" : "collapse"}</td>`)
+                  .attr('data-group', group);
+              }
             }
           });
+
+          // Click group header to collapse/expand
+          $('#tblOverall tbody').off('click', 'tr.group-header');
+          $('#tblOverall tbody').on('click', 'tr.group-header', function () {
+            const group = this.getAttribute('data-group');
+            collapsed[group] = !collapsed[group];
+
+            // Show/hide rows based on current collapse state
+            dt.rows().every(function () {
+              const rowData = this.data();
+              const g = groupKey(rowData[0]);
+              this.node().style.display = collapsed[g] ? "none" : "";
+            });
+
+            dt.draw(false);
+          });
         },
+
         error: function(err) {
           console.error(err);
           statusEl.className = "alert alert-danger py-2 px-3 mt-3 mb-3";
@@ -282,9 +386,11 @@
       });
     }
 
+    // Run
     setAsOfFromLastCommit(ASOF_CSV);
-    renderOverallWithFixedGrandTotal();
+    renderOverallWithCollapsibleTenureGroups();
 
+    // Interval table (no grouping)
     renderCSVTable({
       csvFile: INTERVAL_CSV,
       tableSelector: "#tblInterval",
@@ -294,3 +400,4 @@
   </script>
 </body>
 </html>
+```
