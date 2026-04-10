@@ -285,7 +285,7 @@
               if (value !== null && value > THRESHOLD) $(row).addClass("high-red-row");
             }
           });
-        },
+        }, 
         error: function(err) {
           console.error(err);
           statusEl.className = "alert alert-danger py-2 px-3 mt-3 mb-3";
