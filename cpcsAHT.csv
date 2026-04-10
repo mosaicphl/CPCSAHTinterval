@@ -1,7 +1,7 @@
 ﻿Tenure,AM,Handled Calls,AHT seconds,Hold time.,ACW.,Transfer rate%,Occupancy%
-<90,"Sombero, April Marie",20,604,107,7,0.00%,57.50%
 <90 Grand Total,,20,604,107,7,0.00%,57.50%
+<90,"Sombero, April Marie",20,604,107,7,0.00%,57.50%
+>90 Grand Total,,84,344,1,8,2.38%,31.71%
 >90,"Molina, Schubert Jr",33,321,1,10,0.00%,29.36%
 >90,"Navarra, Mark Debby",51,358,--,7,3.92%,33.24%
->90 Grand Total,,84,344,1,8,2.38%,31.71%
 Grand Total,,104,394,21,8,1.92%,36.54%
