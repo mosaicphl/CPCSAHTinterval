@@ -1,25 +1,18 @@
 ﻿LOB,Supervisor,Name ,Handled Calls ,AHT seconds,ACW Ave,Hold Ave,Transfer rate%
+CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",1,436,10,1,0.00%
+CPCS,"Molina, Schubert Jr","Capillas, Renalyn",3,66,10,,0.00%
 CPCS,"Molina, Schubert Jr","Gador, George II",3,142,10,,0.00%
-CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",3,75,7,,0.00%
-CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",1,801,10,,0.00%
+CPCS,"Molina, Schubert Jr","Surles, Jinky",3,527,10,,0.00%
+CPCS,"Navarra, Mark Debby","Balcena, Riesel Liberty Rose",3,319,10,,0.00%
+CPCS,"Navarra, Mark Debby","Baumbad, Joshua",4,421,3,,0.00%
+CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",5,227,6,,0.00%
+CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",3,330,10,,0.00%
+CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",4,428,10,,0.00%
+CPCS,"Navarra, Mark Debby","Judicpa, Judegin",3,188,10,,0.00%
 CPCS,"Navarra, Mark Debby","Sanchez, Roderick",3,168,10,,0.00%
-CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",1,464,10,,0.00%
-CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",2,1013,0,,50.00%
-CPCS,"Sombero, April Marie","Camarino, Mark",1,67,10,,0.00%
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
-,,,,,,,
+CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",5,453,6,,0.00%
+CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",4,703,2,,25.00%
+CPCS,"Sombero, April Marie","Alob, Rheshane Marie",2,628,5,74,0.00%
+CPCS,"Sombero, April Marie","Camarino, Mark",3,507,10,,0.00%
+CPCS,"Sombero, April Marie","Fernandez, Eljohn",1,602,10,,0.00%
+CPCS,"Sombero, April Marie","Sirame, Kevin John",3,858,10,,0.00%
