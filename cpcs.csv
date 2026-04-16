@@ -1,24 +1,24 @@
-﻿LOB,Supervisor,Name ,Handled Calls ,AHT seconds,ACW Ave,Hold Ave,Transfer rate%,
-CPCS,"Molina, Schubert Jr","Alob, Rheshane Marie",4,1135,6,56,0.00%,87.87%
+﻿LOB,Supervisor,Name ,Handled Calls ,AHT seconds,ACW Ave,Hold Ave,Transfer rate%,Occupancy%
+CPCS,"Molina, Schubert Jr","Alob, Rheshane Marie",7,1104,5,56,0.00%,89.05%
 CPCS,"Molina, Schubert Jr","Cabangal, Ariel",3,196,5,,0.00%,23.50%
-CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",15,296,10,1,0.00%,45.16%
-CPCS,"Molina, Schubert Jr","Capillas, Renalyn",14,387,8,,7.14%,48.34%
-CPCS,"Molina, Schubert Jr","Gador, George II",13,325,10,1,0.00%,41.12%
-CPCS,"Molina, Schubert Jr","Galvez, Christian",9,548,10,,0.00%,77.01%
-CPCS,"Molina, Schubert Jr","Sirame, Kevin John",6,744,10,,0.00%,67.09%
-CPCS,"Molina, Schubert Jr","Surles, Jinky",13,349,10,,0.00%,46.36%
-CPCS,"Molina, Schubert Jr","Taleon, Gerald",5,846,10,30,0.00%,82.39%
-CPCS,"Molina, Schubert Jr","Zerrudo, Jeserelle Jason",7,566,10,107,0.00%,83.76%
-CPCS,"Navarra, Mark Debby","Aragon, Antonio Iii",8,573,10,83,0.00%,80.45%
-CPCS,"Navarra, Mark Debby","Balcena, Riesel Liberty Rose",8,384,10,,0.00%,56.79%
-CPCS,"Navarra, Mark Debby","Baumbad, Joshua",9,527,2,,11.11%,48.86%
-CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",16,382,3,,0.00%,52.49%
-CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",10,458,10,,0.00%,52.89%
-CPCS,"Navarra, Mark Debby","Fernandez, Eljohn",8,592,5,,0.00%,67.01%
-CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",11,352,10,,0.00%,40.59%
-CPCS,"Navarra, Mark Debby","Judicpa, Judegin",10,333,10,,0.00%,43.04%
-CPCS,"Navarra, Mark Debby","Macero, Reynan",4,1211,3,,0.00%,70.62%
-CPCS,"Navarra, Mark Debby","Noblezada, Chriz Vincent",7,517,10,,0.00%,65.51%
-CPCS,"Navarra, Mark Debby","Sanchez, Roderick",10,407,10,,0.00%,44.84%
-CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",16,327,5,,0.00%,47.31%
-CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",10,437,7,,0.00%,51.25%
+CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",22,322,10,1,0.00%,52.71%
+CPCS,"Molina, Schubert Jr","Capillas, Renalyn",19,385,9,,5.26%,52.86%
+CPCS,"Molina, Schubert Jr","Gador, George II",19,356,10,1,0.00%,49.16%
+CPCS,"Molina, Schubert Jr","Galvez, Christian",14,518,10,,0.00%,74.77%
+CPCS,"Molina, Schubert Jr","Sirame, Kevin John",10,700,9,,0.00%,72.74%
+CPCS,"Molina, Schubert Jr","Surles, Jinky",21,361,10,,0.00%,54.99%
+CPCS,"Molina, Schubert Jr","Taleon, Gerald",10,622,10,30,0.00%,78.84%
+CPCS,"Molina, Schubert Jr","Zerrudo, Jeserelle Jason",10,576,10,107,0.00%,83.30%
+CPCS,"Navarra, Mark Debby","Aragon, Antonio Iii",14,538,10,86,0.00%,81.56%
+CPCS,"Navarra, Mark Debby","Balcena, Riesel Liberty Rose",9,453,10,,0.00%,63.55%
+CPCS,"Navarra, Mark Debby","Baumbad, Joshua",14,455,2,,7.14%,55.30%
+CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",24,365,4,,0.00%,58.13%
+CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",15,461,10,,0.00%,58.55%
+CPCS,"Navarra, Mark Debby","Fernandez, Eljohn",12,666,5,,0.00%,74.65%
+CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",16,389,10,,0.00%,49.62%
+CPCS,"Navarra, Mark Debby","Judicpa, Judegin",11,329,10,,0.00%,39.48%
+CPCS,"Navarra, Mark Debby","Macero, Reynan",7,1100,5,,0.00%,74.92%
+CPCS,"Navarra, Mark Debby","Noblezada, Chriz Vincent",12,444,10,,0.00%,62.87%
+CPCS,"Navarra, Mark Debby","Sanchez, Roderick",12,555,9,,8.33%,55.30%
+CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",17,336,5,,0.00%,49.49%
+CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",15,441,7,,0.00%,56.94%
