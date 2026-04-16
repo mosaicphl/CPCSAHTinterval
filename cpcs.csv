@@ -1,25 +1,16 @@
 ﻿LOB,Supervisor,Name ,Handled Calls ,AHT seconds,ACW Ave,Hold Ave,Transfer rate%,
-CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",5,258,10,1,0.00%,23.49%
-CPCS,"Molina, Schubert Jr","Capillas, Renalyn",2,203,10,,0.00%,18.18%
-CPCS,"Molina, Schubert Jr","Gador, George II",4,237,10,,0.00%,17.72%
-CPCS,"Navarra, Mark Debby","Baumbad, Joshua",1,693,0,,0.00%,36.95%
-CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",5,316,0,,0.00%,30.09%
-CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",4,184,10,,0.00%,18.10%
-CPCS,"Navarra, Mark Debby","Sanchez, Roderick",2,484,10,,0.00%,46.98%
-CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",2,250,5,,0.00%,25.39%
-CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",4,383,3,,0.00%,35.49%
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
+CPCS,"Molina, Schubert Jr","Cabangal, Ariel",1,342,6,,0.00%,19.39%
+CPCS,"Molina, Schubert Jr","Caldera, Ann Khrysta",6,312,10,1,0.00%,17.66%
+CPCS,"Molina, Schubert Jr","Capillas, Renalyn",4,188,10,,0.00%,10.26%
+CPCS,"Molina, Schubert Jr","Gador, George II",5,379,10,1,0.00%,16.71%
+CPCS,"Molina, Schubert Jr","Sirame, Kevin John",1,703,10,,0.00%,43.45%
+CPCS,"Molina, Schubert Jr","Surles, Jinky",2,304,10,,0.00%,13.27%
+CPCS,"Navarra, Mark Debby","Baumbad, Joshua",3,500,0,,33.33%,21.12%
+CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",5,316,0,,0.00%,17.71%
+CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",1,67,10,,0.00%,1.63%
+CPCS,"Navarra, Mark Debby","Fernandez, Eljohn",1,562,3,,0.00%,31.14%
+CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",6,253,10,,0.00%,15.56%
+CPCS,"Navarra, Mark Debby","Judicpa, Judegin",1,83,10,,0.00%,2.49%
+CPCS,"Navarra, Mark Debby","Sanchez, Roderick",4,402,10,,0.00%,20.45%
+CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",4,338,4,,0.00%,17.75%
+CPCS,"Navarra, Mark Debby","Valencia, Jellie Joy",5,384,4,,0.00%,23.93%
