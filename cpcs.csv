@@ -1,21 +1,17 @@
 ﻿LOB,Supervisor,Name ,Handled Calls ,AHT seconds,ACW Ave,Hold Ave,Transfer rate%,
-CPCS,"Navarra, Mark Debby","Pajotagana, Champhagne",4,499,9,,0.00%,39.45%
-CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",4,438,5,,0.00%,33.01%
-CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",4,372,5,,50.00%,41.64%
-CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",4,371,5,,0.00%,27.86%
-CPCS,"Navarra, Mark Debby","Camarino, Mark",5,370,8,,20.00%,32.20%
-CPCS,"Navarra, Mark Debby","Calamcaman, Anie Marie",2,317,9,,0.00%,26.04%
-CPCS,"Navarra, Mark Debby","Judicpa, Judegin",2,302,10,,0.00%,49.76%
-CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",2,296,10,,0.00%,23.88%
-CPCS,"Molina, Schubert Jr.","Zerrudo, Jeserelle Jason",2,399,10,,0.00%,44.46%
-CPCS,"Molina, Schubert Jr.","Sirame, Kevin John",2,282,10,,0.00%,39.28%
-CPCS,"Molina, Schubert Jr.","Gador, George II",5,244,10,,0.00%,17.28%
-CPCS,"Molina, Schubert Jr.","Surles, Jinky",2,95,10,,0.00%,12.22%
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
-,,,,,,,,
+CPCS,"Navarra, Mark Debby","Jordan, Mary Beth",3,623,10,,0.00%,47.05%
+CPCS,"Navarra, Mark Debby","Guimaray, Bonna Mae",1,573,10,,0.00%,32.17%
+CPCS,"Navarra, Mark Debby","Ciasico, Mary April Shaine",7,539,6,,0.00%,49.60%
+CPCS,"Navarra, Mark Debby","Camarino, Mark",8,478,9,,12.50%,41.62%
+CPCS,"Navarra, Mark Debby","Calamcaman, Anie Marie",5,456,9,,0.00%,38.47%
+CPCS,"Navarra, Mark Debby","Judicpa, Judegin",6,430,10,,0.00%,50.87%
+CPCS,"Navarra, Mark Debby","Decolongon, Karl Jason",7,409,7,,28.57%,42.68%
+CPCS,"Navarra, Mark Debby","Pajotagana, Champhagne",8,407,9,,0.00%,40.76%
+CPCS,"Navarra, Mark Debby","Tacadao, Janine Marie",6,353,6,,0.00%,32.44%
+CPCS,"Navarra, Mark Debby","Aragon, Antonio Iii",3,172,10,,0.00%,13.94%
+CPCS,"Molina, Schubert Jr.","Galvez, Christian",2,647,5,,0.00%,51.44%
+CPCS,"Molina, Schubert Jr.","Surles, Jinky",4,611,10,,0.00%,53.66%
+CPCS,"Molina, Schubert Jr.","Sirame, Kevin John",4,419,10,,0.00%,54.15%
+CPCS,"Molina, Schubert Jr.","Zerrudo, Jeserelle Jason",5,404,10,,0.00%,37.62%
+CPCS,"Molina, Schubert Jr.","Gador, George II",10,277,10,,0.00%,26.18%
+CPCS,"Molina, Schubert Jr.","Alob, Rheshane Marie",2,259,5,,0.00%,25.02%
